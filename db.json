@@ -24,6 +24,11 @@
       "id": "6c4e",
       "name": "John Doe2",
       "role": "Developer"
+    },
+    {
+      "id": "6fbe",
+      "name": "abhinandan",
+      "role": "trainer"
     }
   ]
 }

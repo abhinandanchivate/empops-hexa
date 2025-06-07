@@ -1,4 +1,5 @@
 const BASE_URL = "http://localhost:3000/employees";
+const employees = [];
 export const addEmployee = async (employee) => {
   try {
     const response = await fetch(BASE_URL);
@@ -42,8 +43,16 @@ export const getEmployeeById = (id) => {
 };
 
 // retrieve the all emp details
-export const getAllEmployees = () => {
-  return employees; // return an array
+export const getAllEmployees = async () => {
+  try {
+    const response = await fetch(BASE_URL);
+    const data = await response.json();
+    console.log(data);
+    return data; // return an array of employees
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
 };
 
 // to delete an employee by id

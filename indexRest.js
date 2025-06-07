@@ -9,7 +9,7 @@ import {
   deleteEmployeeById,
   getAllEmployees,
   getEmployeeById,
-} from "./employeeService.js";
+} from "./empRestService.js";
 
 // id attribute values in html must be unique , it should not be repeated
 console.log("inside index.js file ");
@@ -35,7 +35,7 @@ employeeForm.addEventListener("submit", (event) => {
   const role = empRole.value;
   console.log({ id, name, role });
   deleteEmployeeById(id); // delete the employee if exists before adding a new one
-  const newEmployee = addEmployee({ id, name, role }); // when we will have same reqd key and value holders with same // name
+  const newEmployee = addEmployee({ name, role }); // when we will have same reqd key and value holders with same // name
   console.log(newEmployee);
 
   console.log(getAllEmployees().length);
@@ -48,52 +48,58 @@ employeeForm.addEventListener("submit", (event) => {
 const renderEmployees = () => {
   // approach 2
 
-  const empList = getAllEmployees();
-  empList.forEach((e) => {
-    const existingRow = rowCache.get(e.id);
-    const html = `<td>${e.id}</td><td>${e.name}</td><td>${e.role}</td> <td><button onclick="handleEdit('${e.id}')" class ='btn btn-sm btn-primary me-1'>Edit</button><button onclick="handleDelete('${e.id}')" class ='btn btn-sm btn-danger'> Delete</button> </td>`;
+  const res = getAllEmployees();
+  res
+    .then((empList) => {
+      console.log(empList);
+      empList.forEach((e) => {
+        const existingRow = rowCache.get(e.id);
+        const html = `<td>${e.id}</td><td>${e.name}</td><td>${e.role}</td> <td><button onclick="handleEdit('${e.id}')" class ='btn btn-sm btn-primary me-1'>Edit</button><button onclick="handleDelete('${e.id}')" class ='btn btn-sm btn-danger'> Delete</button> </td>`;
 
-    if (existingRow) {
-      // Update if content changed
-      if (existingRow.innerHTML !== html) {
-        existingRow.innerHTML = html;
-      }
-    } else {
-      // New row
-      const row = document.createElement("tr");
-      row.innerHTML = html;
-      empTableBody.appendChild(row);
-      rowCache.set(e.id, row);
-    }
-  });
-
-  // key : id
-  // value : tr or row content
-  // efficient scalable for live updates
-  // rowCache map we have to maintain it for proper deletion and updation of rows
-
-  // // do we need the data ? ==> yes ==> where is the data ? ==> array employees==> employeeService.js
-  // // how can i access that array / get it ?==> call getAllEmployees function from employeeService.js
-  // const empList = getAllEmployees();
-  // console.log(empList);
-
-  // if (empList.length === 0) {
-  //   // empTableBody.innerHTML = "There is no record ";
-  //   const row = document.createElement("tr");
-  //   row.innerHTML =
-  //     "<td colspan='4' class ='text-center text-muted'>hello there is no record</td>";
-  //   empTableBody.appendChild(row);
-  //   return;
-  // } else {
-  //   // rows = no of elements from the array empList
-  //   empTableBody.innerHTML = ""; // clear the table body before rendering new data
-  //   empList.forEach((e) => {
-  //     const row = document.createElement("tr");
-  //     row.innerHTML = `<td>${e.id}</td> <td>${e.name}</td> <td>${e.role}</td>`;
-  //     empTableBody.appendChild(row);
-  //   });
-  // }
+        if (existingRow) {
+          // Update if content changed
+          if (existingRow.innerHTML !== html) {
+            existingRow.innerHTML = html;
+          }
+        } else {
+          // New row
+          const row = document.createElement("tr");
+          row.innerHTML = html;
+          empTableBody.appendChild(row);
+          rowCache.set(e.id, row);
+        }
+      });
+    })
+    .catch((error) => {});
 };
+
+// key : id
+// value : tr or row content
+// efficient scalable for live updates
+// rowCache map we have to maintain it for proper deletion and updation of rows
+
+// // do we need the data ? ==> yes ==> where is the data ? ==> array employees==> employeeService.js
+// // how can i access that array / get it ?==> call getAllEmployees function from employeeService.js
+// const empList = getAllEmployees();
+// console.log(empList);
+
+// if (empList.length === 0) {
+//   // empTableBody.innerHTML = "There is no record ";
+//   const row = document.createElement("tr");
+//   row.innerHTML =
+//     "<td colspan='4' class ='text-center text-muted'>hello there is no record</td>";
+//   empTableBody.appendChild(row);
+//   return;
+// } else {
+//   // rows = no of elements from the array empList
+//   empTableBody.innerHTML = ""; // clear the table body before rendering new data
+//   empList.forEach((e) => {
+//     const row = document.createElement("tr");
+//     row.innerHTML = `<td>${e.id}</td> <td>${e.name}</td> <td>${e.role}</td>`;
+//     empTableBody.appendChild(row);
+//   });
+// }
+
 window.handleEdit = (id) => {
   console.log("inside handleEdit function ", id);
   // we have to retrieve the specific employee data

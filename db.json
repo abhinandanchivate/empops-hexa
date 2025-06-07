@@ -1,0 +1,29 @@
+{
+  "employees": [
+    {
+      "id": "E001",
+      "name": "John Doe",
+      "role": "Developer"
+    },
+    {
+      "id": "E002",
+      "name": "Jane Smith",
+      "role": "Designer"
+    },
+    {
+      "id": "e1bc",
+      "name": "John Doe",
+      "role": "Developer"
+    },
+    {
+      "id": "eeea",
+      "name": "Advik",
+      "role": "Master"
+    },
+    {
+      "id": "6c4e",
+      "name": "John Doe2",
+      "role": "Developer"
+    }
+  ]
+}
